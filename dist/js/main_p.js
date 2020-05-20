@@ -33,9 +33,14 @@ $(document).ready(function() {
 
     /* 按恐龍可以收信 */
     $('#dinasour').click( function(){
-      socket.emit('give_me_letter', {ID: getCookie('ID')});
+      socket.emit('is_there_letter', {ID: getCookie('ID')});
     });
 });
+
+
+socket.on('there_is_letter', function(data){  
+  $('#bell').show();
+})
 
 //接未讀信件
 socket.on('give_you_letter', function(data){  
@@ -45,7 +50,7 @@ socket.on('give_you_letter', function(data){
     }
     else if(data.Letters.length == 0)
     {
-      $('#bell').fadeOut(100);
+      $('#bell').hide();
     }
     var str = "";
     if (page == 0)
@@ -90,6 +95,7 @@ socket.on('give_you_letter', function(data){
       } 
       document.getElementById("content").innerHTML = str;
       str="";
+      page = 2;
     }
     else if($('#container').attr("src") == "./assests/sysinfo.svg")
     { 
@@ -97,6 +103,7 @@ socket.on('give_you_letter', function(data){
       str+="請老師給我們高分一點！";
       document.getElementById("content").innerHTML = str;
       str="";
+      page = 2;
     }
     str="";
  })

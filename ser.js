@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 6553
+const port = 6558
 const https = require('https')
 const fs = require('fs');
 
@@ -171,7 +171,8 @@ io.on('connection', function(socket) {
           parent_password: db.val().parent_password,
           birthday: db.val().birthday,
           nickname: db.val().nickname,
-          letter: letters
+          letter: letters,
+          letter_for_kid: db.val().letter_for_kid
         }
         reff.set(input);
         console.log(letters)
@@ -271,6 +272,19 @@ io.on('connection', function(socket) {
         }
         //console.log(letters);
         socket.emit('give_you_letter', {ID:data.ID, Letters:letters});//傳
+      });
+    })
+
+    /* 確認有沒有信 */
+    socket.on('is_there_letter', function(data){
+      database.ref('account/'+data.ID).once('value',db=>{
+        for(var i=0; i< db.val().letter.length; i++)
+        {
+          if(db.val().letter[i].read == false)
+          {
+            socket.emit('there_is_letter', {ID:data.ID});//傳
+          }
+        }
       });
     })
 
