@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Find the Difference</title>
+        <link href="./css/style.css" rel="stylesheet" type="text/css">
+        <link href="./css/fonts.css" rel="stylesheet" type="text/css">        
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script href="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" crossorigin="anonymous"></script>
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/socket.io.js"></script>
+        <script src="./js/jquery-ui.js"></script>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <!-- 改 -->
+        <div id="cover"></div>
+
+        <navigation_bar>
+            <level_group>
+                <img id="level_logo" src="assests/Group 67.png">
+            </level_group>
+            <money_group>
+                <img id="money_logo" src="assests/$.png">
+                <img id="money_rect" src="assests/Rectangle 13.png">
+                <img id="money_value" src="assests/1,500.png">
+            </money_group>
+            <!-- 改 -->
+            <img id="nortification" src="assests/nortification.svg">
+            <img id="setting" src="assests/Group 69@2x.png">
+            <img id="help" src="assests/Group 68.png">
+            <!-- 改 -->
+            <h1 id="kid_name"></h1>
+        </navigation_bar>
+        <img id="dinasour" src="res/singin/mom_dinosaur.svg">
+        <left_selection class="left_selection">
+        <!-- 改 -->
+        <div onclick="letter_info()">
+            <img id="left_leaf" src="assests/Path 148.png">
+            <img id="mission_logo" src="assests/Group 65.png">
+            <img id="mission_text" src="assests/毎日任務.png">
+        </div>
+        </left_selection>
+        <right_selection class="right_selection">
+            <img id="right_leaf" src="assests/Path 147.png">
+            <img id="training_logo" src="assests/Group 66.png">
+            <img id="training_text" src="assests/恐龍訓練場.png">
+        </right_selection>
+        <!--以上為主畫面-->
+        
+        <!--parent-->
+        <img id="bell" src="assests/Group 102.svg">
+        <div>
+            <img id = "black" src = "assests/black.svg">
+        </div>
+        <div id = "info">     
+            <img id = "container" src = "assests/sysinfo.svg">
+            <div id = "sysinfo"> 系統公告 </div>
+            <div id = "mail"> 收件匣 </div>
+            <div id = "content"></div>
+            <img id = "letter_p_close" src = "assests/Group 174.svg">
+        </div>
+
+        <!--上面的已評分和未評分-->
+        <div id = "all_letter">
+            <img id = "unscored" src = "assests/Group 173.svg">
+            <img id = "scored" src = "assests/Group 172.svg">
+        </div>
+
+        <!--letter尼斯湖水怪-->
+        <section class="info">
+            <img id="letter_info_p" src="assests/Group 156.svg">
+            <div onclick="go_to_letter()">
+                <img id="letter_info_click" src="assests/我知道了@3x.png">
+            </div>
+        </section>
+
+        <!--寫信區-->
+        <img id="letter_bg_rec" src="assests/Rectangle 18@3x.png">
+        <img id="sent" src="assests/信件已送出！.svg">
+        <section class="write_letter" >
+            <img id="letter_bg_p" src="assests/Group 180.svg">
+            <textarea id="letter"></textarea>
+            <div onclick="letter_back()" style="z-index:7">
+                <img id="letter_back" src="assests/Group 57@3x.png">
+            </div>
+            <div onclick="send_letter()" style="z-index:7">
+                <img id="letter_submit" src="assests/Group 139@3x.png">
+            </div>
+            <img id="pen" src="assests/vintage@3x.png">
+        </section>
+
+        <script src='./js/main_p.js'></script>
+    </body>
+</html>
