@@ -18,6 +18,18 @@
     src: url("./../res/fonts/GenJyuuGothic-P-Normal.ttf");
 }
 
+.GenJyuuGothicH{
+    font-family: GenJyuuGothicH;
+}
+.GenJyuuGothicM{
+    font-family: GenJyuuGothicM;
+}
+.GenJyuuGothicN{
+    font-family: GenJyuuGothicN;
+}
+
+
+
 
 body {
     background: url("./../assests/背景.png");

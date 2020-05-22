@@ -48,7 +48,7 @@ $(document).ready(function () {
 		    key5 = "birthday";
 		    value5 = list.birthday;
 		    var expires = new Date();
-		    expires.setTime(expires.getTime()+10*60*1000 );//10 min
+		    expires.setTime(expires.getTime()+60*60*1000 );//10 min
 		    document.cookie = key1 + "=" + escape(value1) +"; expires=" + expires.toGMTString();
 		    document.cookie = key3 + "=" + escape(value3) +"; expires=" + expires.toGMTString();
 		    document.cookie = key4 + "=" + escape(value4) +"; expires=" + expires.toGMTString();
@@ -109,6 +109,8 @@ function GoToParent(){
   document.cookie = key2 + "=" + escape(value2) +"; expires=" + expires.toGMTString();
   $(".child").toggleClass("fadeout")
   $(".choose--child").toggleClass("fadeout")
+  $(".choose--child").css("display","none")
+  $(".child").css("display","none")
   $(".parent_input").show()
   $(".parent_sure").show()
   //document.location.href="../loading.html";

@@ -210,24 +210,28 @@ body {
   from {
     opacity: 1; }
   to {
+    display: none;
     opacity: 0; } }
 
 @-moz-keyframes fadeout {
   from {
     opacity: 1; }
   to {
+    display: none;
     opacity: 0; } }
 
 @-ms-keyframes fadeout {
   from {
     opacity: 1; }
   to {
+    display: none;
     opacity: 0; } }
 
 @keyframes fadeout {
   from {
     opacity: 1; }
   to {
+    display: none;
     opacity: 0; } }
 
 @-webkit-keyframes LOGO--floatup {

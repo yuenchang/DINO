@@ -232,7 +232,7 @@ function startTimer(duration_time) {
         if(ans_isclear == 5){
             ans_isclear = 0;
             remain_time = timer + 1;
-            document.getElementById("result_text").innerHTML = remain_time + "秒";
+            document.getElementById("result_text").innerHTML = (180-remain_time-1) + "秒";
             //duration = countdown_duration;
             ending_function();
         }
@@ -240,7 +240,7 @@ function startTimer(duration_time) {
             ans_isclear = 0;
             remain_time = 0;                
             ending_function();
-            document.getElementById("result_text").innerHTML = remain_time + "秒";
+            document.getElementById("result_text").innerHTML = (180-remain_time-1) + "秒";
             //duration = countdown_duration;
             go_in = false;
         }
