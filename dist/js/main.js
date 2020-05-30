@@ -3,63 +3,65 @@ var socket = io(wip);
 
 var page = 0;
 $(document).ready(function () {
-    $('#letter').html("\n  謝謝" + getCookie('nickname') + "\n\n  因為...\n\n  這讓我覺得...");
-    var id = getCookie('ID'); 
-    if(id==null)
-       window.location.href='signin.html';
-    $('#kid_name').html(id);
+  $('#letter').html("\n  謝謝" + getCookie('nickname') + "\n\n  因為...\n\n  這讓我覺得...");
+  var id = getCookie('ID'); 
+  if(id==null)
+    window.location.href='signin.html';
+  $('#kid_name').html(id);
 
-    /* 重整畫面時設定好bell有沒有紅色 */
-    socket.emit('give_me_money', {ID: getCookie('ID')});
-    socket.emit('give_me_score', {ID: getCookie('ID')});
-    socket.emit('give_me_stage', {ID: getCookie('ID')});
+  /* 重整畫面時設定好bell有沒有紅色 */
+  socket.emit('give_me_money', {ID: getCookie('ID')});
+  socket.emit('give_me_score', {ID: getCookie('ID')});
+  socket.emit('give_me_stage', {ID: getCookie('ID')});
+  socket.emit('give_me_letter_k', {ID: getCookie('ID')});
+  /* 信件夾click設定 */    
+  $('#sysinfo').click( function(){
+    $('#container').attr("src", "./assests/sysinfo.svg");
     socket.emit('give_me_letter_k', {ID: getCookie('ID')});
-    /* 信件夾click設定 */    
-    $('#sysinfo').click( function(){
-      $('#container').attr("src", "./assests/sysinfo.svg");
-      socket.emit('give_me_letter_k', {ID: getCookie('ID')});
-    });
+  });
 
-    $('#mail').click( function(){
-      $('#container').attr("src", "./assests/mail.svg");
-      socket.emit('give_me_letter_k', {ID: getCookie('ID')});
-    });
-  
-    $('#nortification').click( function(){
-      $('#black').fadeIn(400);
-      $('#info').fadeIn(400);
-      socket.emit('give_me_letter_k', {ID: getCookie('ID')});
-    });
+  $('#mail').click( function(){
+    $('#container').attr("src", "./assests/mail.svg");
+    socket.emit('give_me_letter_k', {ID: getCookie('ID')});
+  });
 
-    $('#letter_p_close').click( function(){
-      $('#black').fadeOut(400);
-      $('#info').fadeOut(400);
-    });
+  $('#nortification').click( function(){
+    $('#black').fadeIn(400);
+    $('#info').fadeIn(400);
+    socket.emit('give_me_letter_k', {ID: getCookie('ID')});
+  });
 
-    /* 按恐龍可以收信 */
+  $('#letter_p_close').click( function(){
+    $('#black').fadeOut(400);
+    $('#info').fadeOut(400);
+  });
+
+  /* 按恐龍可以收信 */
   $('#ass_dinasour').click( function(){
     socket.emit('give_me_letter_k', {ID: getCookie('ID')});
     $( "#ass_dinasour" ).animate({top:"-=10vh" }, "fast",()=>{
-     $( "#ass_dinasour" ).animate({top:"+=10vh" }, "fast");   
-      })
+      $( "#ass_dinasour" ).animate({top:"+=10vh" }, "fast");   
     })
+  })
+
+
+});
+
+
+var rot2 = function() {
+  $("#ass_dinasour").rotate({
+    angle: 0,
+    animateTo: 360,
+    callback: rot2,
+    easing: function(x, t, b, c, d) { // t: current time, b: begInnIng value, c: change In value, d: duration
+      return c * (t / d) + b;
+    }
   });
+}
+// rot2();
 
-
-  var rot2 = function() {
-    $("#ass_dinasour").rotate({
-      angle: 0,
-      animateTo: 360,
-      callback: rot2,
-      easing: function(x, t, b, c, d) { // t: current time, b: begInnIng value, c: change In value, d: duration
-        return c * (t / d) + b;
-      }
-    });
-  }
- // rot2();
-
-
-$("#assdinosour").rotate({
+/*
+$("#ass_dinosour").rotate({
   bind:
   {
     mouseover : function() {
@@ -69,14 +71,28 @@ $("#assdinosour").rotate({
       $(this).rotate({animateTo:0})
     }
   }
+  */
 
+$(window).click(function(e) {
+
+  var relativeX = (e.pageX - $(e.target).offset().left),
+    relativeY = (e.pageY - $(e.target).offset().top);
+
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+  var X = (relativeX/w)*100;
+  var Y = ((h-relativeY)/h)*100;
+  var offx = parseInt($('#ass_dinasour').css('width'), 10);
+  var offy = parseInt($('#ass_dinasour').css('height'), 10);
+  $( "#ass_dinasour" ).animate({top:e.pageY-180,left:e.pageX-100 }, "fast");
 });
+
 
 
 var move = 1;
 
 var timeoutID = window.setInterval(( () =>{ 
-  
+
   if(move){
     $('#ass_dinasour').rotate({animateTo:10})
     move = 0;
@@ -127,7 +143,7 @@ var timeoutID = window.setInterval(( () =>{
     else
       diffy = 0;
   }else{
-     var dir = Math.floor(Math.random()*3);
+    var dir = Math.floor(Math.random()*3);
     if(dir == 0)
       diffy = 5;
     else if(dir==1)
@@ -140,24 +156,24 @@ var timeoutID = window.setInterval(( () =>{
 
 
 function go_to_letter(){
-    $('.write_letter').fadeIn(800);
-    $('.info').fadeOut(400);
-    $('#cover').css('display','none'); //關閉遮罩層
+  $('.write_letter').fadeIn(800);
+  $('.info').fadeOut(400);
+  $('#cover').css('display','none'); //關閉遮罩層
 
-    //屁頭上升
-    $('#ass_dinasour').animate({top:"-=23vh" },800);
+  //屁頭上升
+  $('#ass_dinasour').animate({top:"-=23vh" },800);
 }
 
 function letter_info(){
-    $('#cover').css('display','block'); //顯示遮罩層
-    $('.info').fadeIn(400);
-    $('.info').css('z-index', 5);
-    $('#right_leaf').animate({left:"+=200vw" },1500);
-    $('#training_logo').animate({left:"+=200vw" },1500);
-    $('#training_text').animate({left:"+=200vw" },1500);
-    $('#left_leaf').animate({left:"-=200vw" },1500);
-    $('#mission_logo').animate({left:"-=200vw" },1500);
-    $('#mission_text').animate({left:"-=200vw" },1500);
+  $('#cover').css('display','block'); //顯示遮罩層
+  $('.info').fadeIn(400);
+  $('.info').css('z-index', 5);
+  $('#right_leaf').animate({left:"+=200vw" },1500);
+  $('#training_logo').animate({left:"+=200vw" },1500);
+  $('#training_text').animate({left:"+=200vw" },1500);
+  $('#left_leaf').animate({left:"-=200vw" },1500);
+  $('#mission_logo').animate({left:"-=200vw" },1500);
+  $('#mission_text').animate({left:"-=200vw" },1500);
 }
 
 /*function write_letter(){
@@ -166,97 +182,97 @@ function letter_info(){
 }*/
 
 function letter_back(){
-    $('.write_letter').fadeOut(800);
-    $('#right_leaf').animate({left:"-=200vw" },1500);
-    $('#training_logo').animate({left:"-=200vw" },1500);
-    $('#training_text').animate({left:"-=200vw" },1500);
-    $('#left_leaf').animate({left:"+=200vw" },1500);
-    $('#mission_logo').animate({left:"+=200vw" },1500);
-    $('#mission_text').animate({left:"+=200vw" },1500);
-    $('#ass_dinasour').animate({top:"+=23vh" },800);
+  $('.write_letter').fadeOut(800);
+  $('#right_leaf').animate({left:"-=200vw" },1500);
+  $('#training_logo').animate({left:"-=200vw" },1500);
+  $('#training_text').animate({left:"-=200vw" },1500);
+  $('#left_leaf').animate({left:"+=200vw" },1500);
+  $('#mission_logo').animate({left:"+=200vw" },1500);
+  $('#mission_text').animate({left:"+=200vw" },1500);
+  $('#ass_dinasour').animate({top:"+=23vh" },800);
 }
 
 function send_letter(){
-    //寄信
-    var letter = $('#letter').val();
-    var id = getCookie('ID');
-    socket.emit('send_letter', {ID: id, Letter: letter});
+  //寄信
+  var letter = $('#letter').val();
+  var id = getCookie('ID');
+  socket.emit('send_letter', {ID: id, Letter: letter});
 
-    // 動畫
-    //$('#letter_bg').animate({height:"-=20vh"}, 1200);
-    $('.write_letter').css('display','none');
-    $('#letter_bg_rec').css('display','block');
-    $('#letter_bg_rec').animate({top:"+=22vh", left:"+=15vw", height:"-=43vh", width:"-=30vw"}, 800);
-    $('#ass_dinasour').animate({top:"+=23vh" },800);
-    $('#sent').fadeIn(1200);
-    $('#right_leaf').animate({left:"-=200vw" },1500);
-    $('#training_logo').animate({left:"-=200vw" },1500);
-    $('#training_text').animate({left:"-=200vw" },1500);
-    $('#left_leaf').animate({left:"+=200vw" },1500);
-    $('#mission_logo').animate({left:"+=200vw" },1500);
-    $('#mission_text').animate({left:"+=200vw" },1500);
-    $('#sent').fadeOut(2000);
-    $('#letter_bg_rec').fadeOut(2000);
+  // 動畫
+  //$('#letter_bg').animate({height:"-=20vh"}, 1200);
+  $('.write_letter').css('display','none');
+  $('#letter_bg_rec').css('display','block');
+  $('#letter_bg_rec').animate({top:"+=22vh", left:"+=15vw", height:"-=43vh", width:"-=30vw"}, 800);
+  $('#ass_dinasour').animate({top:"+=23vh" },800);
+  $('#sent').fadeIn(1200);
+  $('#right_leaf').animate({left:"-=200vw" },1500);
+  $('#training_logo').animate({left:"-=200vw" },1500);
+  $('#training_text').animate({left:"-=200vw" },1500);
+  $('#left_leaf').animate({left:"+=200vw" },1500);
+  $('#mission_logo').animate({left:"+=200vw" },1500);
+  $('#mission_text').animate({left:"+=200vw" },1500);
+  $('#sent').fadeOut(2000);
+  $('#letter_bg_rec').fadeOut(2000);
 
-    //圖片大小復原
-    $('#letter_bg_rec').animate({top:"-=22vh", left:"-=15vw", height:"+=43vh", width:"+=30vw"}, 10);
+  //圖片大小復原
+  $('#letter_bg_rec').animate({top:"-=22vh", left:"-=15vw", height:"+=43vh", width:"+=30vw"}, 10);
 }
 
 /*** 收信 ****/
 //接未讀信件
 socket.on('give_you_letter_k', function(data){  
-    console.log(data.Letters);
-    if(data.Letters.length > 0)
-    {
-      $('#bell').show();
-    }
-    else if(data.Letters.length == 0)
-    {
-      $('#bell').fadeOut(100);
-    }
-    var str = "";
-    if (page == 0)
-    {
-      $('#container').attr("src", "./assests/sysinfo.svg");
-      page = 1;
-    }
-    if($('#container').attr("src") == "./assests/mail.svg")
-    {
-      console.log('in mail');
-       
-      for(var i=0; i<data.Letters.length; i++)
-      { 
-        console.log('letter');
-        str+="<div class = \"letter\" onclick=\"expand(event)\" id=\""
-        str+=data.Letters[i].letter_id;
-        str+="\">";
-        str+="<div class = \"node\">";
-        str+=data.Letters[i].date;
-        str+=" 給寶貝的信</div>";
-        str+="<div class = \"text\">";
-        str+=data.Letters[i].content;
-        str+="</div>";
-          
-        str+="</div>";
-        
-      } 
-      document.getElementById("content").innerHTML = str;
-      str="";
-    }
-    else if($('#container').attr("src") == "./assests/sysinfo.svg")
+  console.log(data.Letters);
+  if(data.Letters.length > 0)
+  {
+    $('#bell').show();
+  }
+  else if(data.Letters.length == 0)
+  {
+    $('#bell').fadeOut(100);
+  }
+  var str = "";
+  if (page == 0)
+  {
+    $('#container').attr("src", "./assests/sysinfo.svg");
+    page = 1;
+  }
+  if($('#container').attr("src") == "./assests/mail.svg")
+  {
+    console.log('in mail');
+
+    for(var i=0; i<data.Letters.length; i++)
     { 
-      str+="請老師給我們高分一點！";
-      document.getElementById("content").innerHTML = str;
-      str="";
-    }
+      console.log('letter');
+      str+="<div class = \"letter\" onclick=\"expand(event)\" id=\""
+      str+=data.Letters[i].letter_id;
+      str+="\">";
+      str+="<div class = \"node\">";
+      str+=data.Letters[i].date;
+      str+=" 給寶貝的信</div>";
+      str+="<div class = \"text\">";
+      str+=data.Letters[i].content;
+      str+="</div>";
+
+      str+="</div>";
+
+    } 
+    document.getElementById("content").innerHTML = str;
     str="";
- })
- 
- 
+  }
+  else if($('#container').attr("src") == "./assests/sysinfo.svg")
+  { 
+    str+="請老師給我們高分一點！";
+    document.getElementById("content").innerHTML = str;
+    str="";
+  }
+  str="";
+})
+
+
 socket.on('give_you_money', function(data){  
   if(data.ID == getCookie('ID')){
-    
-    
+
+
   }
 })
 
@@ -282,34 +298,34 @@ socket.on('fuckyou', function(data){
 })
 
 
- function expand(e){
-      if( $(e.target).hasClass('text') ){/***************************** */
-        return; 
-      }
-      e.target = $(e.target).parents('.letter');
-      var exp = false;
-      if( $(e.target).hasClass('letter-expand') ){
-        exp = true;
-      }
-    
-      if(exp){
-        $(e.target).children('.text').fadeOut(800);
-        console.log($(e.target).children('.text'));
-      }
-  
-      $(e.target).toggleClass('letter-expand',1000,function(){
-        if( exp == false){
-          $(e.target).children('.text').fadeIn(800).css("display","inline-block");                                                    
-        }
-      })
+function expand(e){
+  if( $(e.target).hasClass('text') ){/***************************** */
+    return; 
   }
+  e.target = $(e.target).parents('.letter');
+  var exp = false;
+  if( $(e.target).hasClass('letter-expand') ){
+    exp = true;
+  }
+
+  if(exp){
+    $(e.target).children('.text').fadeOut(800);
+    console.log($(e.target).children('.text'));
+  }
+
+  $(e.target).toggleClass('letter-expand',1000,function(){
+    if( exp == false){
+      $(e.target).children('.text').fadeIn(800).css("display","inline-block");                                                    
+    }
+  })
+}
 
 
 
 function getCookie(name) {
-    var value = "; " + document.cookie;
-    var parts = value.split("; " + name + "=");
-    if (parts.length == 2) return parts.pop().split(";").shift();
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
 }
 
 //shake
@@ -345,17 +361,17 @@ function deviceMotionHandler(eventData) {
 
 if(window.DeviceOrientationEvent) {
   window.addEventListener('deviceorientation', function(event) {
-      var alpha = event.alpha,
+    var alpha = event.alpha,
       beta = event.beta,
       gamma = event.gamma;
-      
-      if(beta>90)
-        beta = 90;
-      if(beta<0)
-        beta = 0;
-      var y = (beta*40) / 90 - 10;
-      $("#cloud").css("top", `${y}vh`); 
-      $("#cloud").css("left", `${gamma}vw`); 
+
+    if(beta>90)
+      beta = 90;
+    if(beta<0)
+      beta = 0;
+    var y = (beta*40) / 90 - 10;
+    $("#cloud").css("top", `${y}vh`); 
+    $("#cloud").css("left", `${gamma}vw`); 
   }, false);
 }else{
   document.querySelector('body').innerHTML = '你的瀏覽器不支援喔';
