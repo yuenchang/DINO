@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 6558
+const port = 8877
 const https = require('https')
 const fs = require('fs');
 
@@ -50,8 +50,8 @@ app.get('/register', (req, res) => {
           nickname: req.query.nickname,
           letter: "",
           letter_for_kid:"",
-          score: 0
-
+          score: 0,
+          stage: 0
         } 
         var reff = database.ref('account/'+req.query.id);
         reff.set(input);
@@ -93,6 +93,7 @@ app.get('/signin',(req, res) =>{
           var pwd = data.val().parent_password
           var nickname = data.val().nickname
           var birthday = data.val().birthday
+          var stage = data.val().stage
           console.log(typeof(nickname))
           console.log(nickname)
           //傳給cookie的資料為下
@@ -102,7 +103,8 @@ app.get('/signin',(req, res) =>{
               "pwd": "${pwd}",
               "nickname": "${nickname}",
               "birthday": "${birthday}",
-              "exist": true
+              "exist": true,
+              "stage": "${stage}"
             }
           `)
         }
@@ -172,7 +174,9 @@ io.on('connection', function(socket) {
           birthday: db.val().birthday,
           nickname: db.val().nickname,
           letter: letters,
-          letter_for_kid: db.val().letter_for_kid
+          letter_for_kid: db.val().letter_for_kid,
+          score: db.val().score,
+          stage: db.val().stage
         }
         reff.set(input);
         console.log(letters)
@@ -211,7 +215,9 @@ io.on('connection', function(socket) {
         birthday: db.val().birthday,
         nickname: db.val().nickname,
         letter: db.val().letter,
-        letter_for_kid: letters
+        letter_for_kid: letters,
+        score:db.val().score,
+        stage:db.val().stage
       }
       reff.set(input);
       console.log(letters)
@@ -232,6 +238,12 @@ io.on('connection', function(socket) {
 
     socket.on('end_story', function(data){
       console.log("story end");
+      
+      database.ref('account/'+data.ID+'/stage').once('value',db=>{
+        var s = 1;
+        database.ref('account/'+data.ID+'/stage').set(1);
+      });
+
       io.sockets.emit('get_egg', {ID:data.ID});
     })
 
@@ -320,4 +332,34 @@ io.on('connection', function(socket) {
         database.ref('account/'+data.ID+'/score').set(s);
       });
     })
+
+    socket.on('give_me_score', function(data){
+      database.ref('account/'+data.ID+'/score').once('value',db=>{
+        var s = db.val();
+        socket.emit('give_you_score', {ID:data.ID, Score:s});//傳
+      });
+    })
+
+    socket.on('give_me_stage', function(data){
+      database.ref('account/'+data.ID+'/stage').once('value',db=>{
+        var s = db.val();
+        socket.emit('give_you_stage', {ID:data.ID, Stage:s});//傳
+      });
+    })
+    socket.on('fuck', function(data){
+      console.log('fuckyou');
+      socket.emit('fuckyou', {ID:data.ID});
+    })
+
+
+
+/*
+    socket.on('give_me_money', function(data){
+      database.ref('account/'+data.ID+'/score').once('value',db=>{
+        var s = db.val();
+        socket.emit('give_you_score', {ID:data.ID, Score:s});
+      });
+    })
+*/
+    
 })

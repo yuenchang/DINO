@@ -3,10 +3,15 @@ var socket = io(wip);
 
 var page = 0;
 $(document).ready(function() {
-  $('#letter').html("\n  親愛的寶貝：\n");
-    var id = getCookie('ID'); 
+  
 
+  $('#letter').html("\n  親愛的寶貝：\n");
+  var id = getCookie('ID'); 
+  if(id==null)
+    window.location.href='signin.html';
   socket.emit('give_me_letter', {ID: getCookie('ID')});
+  socket.emit('give_me_score', {ID: getCookie('ID')});
+  socket.emit('give_me_stage', {ID: getCookie('ID')});
     /* 信件夾click設定 */    
     $('#sysinfo').click( function(){
       $('#container').attr("src", "./assests/sysinfo.svg");
@@ -112,15 +117,17 @@ socket.on('give_you_letter', function(data){
  
 
  function expand(e){
+      
       if( $(e.target).hasClass('score') ){
         return;
-  
       }else if( $(e.target).hasClass('nice') ){
         return;
       }else if( $(e.target).hasClass('bad') ){
         return;
       }else if( $(e.target).hasClass('text') ){
         return; 
+      }else if($(e.target).hasClass('node') ){
+        return;
       }
       e.target = $(e.target).parents('.letter');
       var exp = false;
@@ -215,6 +222,30 @@ function send_letter(){
   //圖片大小復原
   $('#letter_bg_rec').animate({top:"-=22vh", left:"-=15vw", height:"+=43vh", width:"+=30vw"}, 10);
 }
+
+socket.on('fuckyou', function(data){
+  if(data.ID == getCookie('ID')){
+    alert('I am fucked');
+  }
+})
+
+
+
+socket.on('give_you_score', function(data){
+  if(data.ID == getCookie('ID')){
+    var em = (data.Score / 100 )*4 + "em";
+    $('#EXP').css({"width":em});
+  }
+})
+
+socket.on('give_you_stage', function(data){
+  if(data.ID == getCookie('ID')){
+    var i = document.getElementById("level"); 
+    i.innerHTML = data.Stage;
+  }
+})
+
+
 
 /* 返回主要畫面 */
 function letter_back(){

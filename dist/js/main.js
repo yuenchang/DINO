@@ -5,9 +5,14 @@ var page = 0;
 $(document).ready(function () {
     $('#letter').html("\n  謝謝" + getCookie('nickname') + "\n\n  因為...\n\n  這讓我覺得...");
     var id = getCookie('ID'); 
+    if(id==null)
+       window.location.href='signin.html';
     $('#kid_name').html(id);
 
     /* 重整畫面時設定好bell有沒有紅色 */
+    socket.emit('give_me_money', {ID: getCookie('ID')});
+    socket.emit('give_me_score', {ID: getCookie('ID')});
+    socket.emit('give_me_stage', {ID: getCookie('ID')});
     socket.emit('give_me_letter_k', {ID: getCookie('ID')});
     /* 信件夾click設定 */    
     $('#sysinfo').click( function(){
@@ -151,7 +156,35 @@ socket.on('give_you_letter_k', function(data){
  })
  
  
- 
+socket.on('give_you_money', function(data){  
+  if(data.ID == getCookie('ID')){
+    
+    
+  }
+})
+
+socket.on('give_you_score', function(data){  
+  if(data.ID == getCookie('ID')){
+    var em = (data.Score / 100 )*4 + "em";
+    console.log(em);
+    $('#EXP').css({"width":em});
+  }
+})
+
+
+socket.on('give_you_stage', function(data){
+  if(data.ID == getCookie('ID')){
+    var i = document.getElementById("level");
+    i.innerHTML = data.Stage;
+  }
+})
+
+socket.on('fuckyou', function(data){
+  if(data.ID == getCookie('ID')){
+    console.log('i am fucked');
+  }
+})
+
 
  function expand(e){
       if( $(e.target).hasClass('text') ){/***************************** */

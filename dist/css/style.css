@@ -32,7 +32,7 @@
 
 
 body {
-    background: url("./../assests/背景.png");
+    background: url("./../assests/bg.png");
     background-size: 100vw;
 }
 
@@ -57,9 +57,12 @@ level_group{
     left: 0vw;
 }
 
+#EXP{
+  width:0em;
+}
+
 #level_logo {
-    position: absolute;
-    width: 27vw;
+  top: -1.7vh;
 }
 
 money_group{

@@ -1,11 +1,17 @@
 
 if (getCookie('who')=='child')
 {
-    setTimeout("location.href='getegg.html'",4000);
+    if(getCookie('stage')=='0')
+      setTimeout("location.href='getegg.html'",4000);
+    else 
+      setTimeout("location.href='main.html'",4000);
 }
 else if(getCookie('who')=='parent')
 {
-    setTimeout("location.href='layegg.html'",4000);
+    if(getCookie('stage')=='0')
+      setTimeout("location.href='layegg.html'",4000);
+    else
+      setTimeout("location.href='main_p.html'",4000);
 }
 
 

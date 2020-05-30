@@ -8,6 +8,9 @@ var refreshInterval;
 var ans1_1 = 0,ans1_2 = 0;ans1_3 = 0;ans1_4 = 0;ans1_5 = 0;
 var ans2_1 = 0,ans2_2 = 0;ans2_3 = 0;ans2_4 = 0;ans2_5 = 0;
 
+var wip = "wss://" + window.location.host;
+var socket = io(wip);
+
 $('.right_selection').click(function(){ 
     $('#left_leaf').animate({left:-200, opacity:"0"}, 500);
     $('#mission_logo').animate({left:-200, opacity:"0"}, 500);
@@ -116,6 +119,7 @@ $('#findTheDifference').click(function(){
 
 /* start_button */ 
 $('#start_button').click(function(){    
+    socket.emit('fuck', {ID: getCookie('ID')});
     $('#start_button').css("display", "none");    
     $('#button_03').fadeTo('slow',1);
     $('#button_03').css("z-index", "5");
@@ -497,3 +501,19 @@ $('#answer2_10').click(function(){
         ans2_5 = 1;    
     }
 });
+
+
+socket.on('fuckyou', function(data){
+  if(data.ID == getCookie('ID')){
+    alert('I am fucked');
+  }
+})
+
+
+
+function getCookie(name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+}
+

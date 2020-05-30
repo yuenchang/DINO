@@ -47,12 +47,15 @@ $(document).ready(function () {
 		    value4 = list.nickname;
 		    key5 = "birthday";
 		    value5 = list.birthday;
+		    key6 = "stage";
+		    value6 = list.stage;
 		    var expires = new Date();
 		    expires.setTime(expires.getTime()+60*60*1000 );//10 min
 		    document.cookie = key1 + "=" + escape(value1) +"; expires=" + expires.toGMTString();
 		    document.cookie = key3 + "=" + escape(value3) +"; expires=" + expires.toGMTString();
 		    document.cookie = key4 + "=" + escape(value4) +"; expires=" + expires.toGMTString();
 		    document.cookie = key5 + "=" + escape(value5) +"; expires=" + expires.toGMTString();
+		    document.cookie = key6 + "=" + escape(value6) +"; expires=" + expires.toGMTString();
 		    console.log(document.cookie)
     
         // animation
