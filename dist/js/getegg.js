@@ -5,9 +5,10 @@ var socket = io(wip);
 var stage = 0;
 
 $(document).ready(function (){
+  
+  socket.emit('kidready', {ID:getCookie('ID')} );
   stage = 0;
-  });
-
+});
 
 socket.on('help', function(data){
   

@@ -4,6 +4,8 @@ const port = 8877
 const https = require('https')
 const fs = require('fs');
 
+var readylist = []
+
 /**** ssl資料 ****/
 var server = https.createServer({
   key: fs.readFileSync('./ssl/private.key'),
@@ -121,6 +123,17 @@ app.get('/signin',(req, res) =>{
   });
 })
 
+Array.prototype.remove = function() {
+      var what, a = arguments, L = a.length, ax;
+      while (L && this.length) {
+                what = a[--L];
+                while ((ax = this.indexOf(what)) !== -1) {
+                              this.splice(ax, 1);
+                          }
+            }
+      return this;
+};
+
 /**** 所有socket溝通都包在io.on之下 ****/
 io.on('connection', function(socket) {
   
@@ -225,6 +238,30 @@ io.on('connection', function(socket) {
   })
 
     /**** 故事 ****/
+    
+    socket.on('kidready', function(data){
+      readylist.push(data.ID);    
+      console.log(readylist);
+    })
+    
+    socket.on('MayIGo',function(data){
+      var f = false;
+      for(var i = 0;i< readylist.length;i++){
+        if( readylist[i] == data.ID){
+          f =true;
+          break; 
+        }
+      }
+
+      if(f){
+        console.log('ok');
+        socket.emit('Go', {ID:data.ID, Pass:true});
+      }else{
+        console.log('no');
+        socket.emit('Go', {ID:data.ID, Pass:false});
+      }
+    })
+    
     socket.on('need_help', function(data){
            console.log("help");
            console.log(data.ID)
@@ -238,7 +275,7 @@ io.on('connection', function(socket) {
 
     socket.on('end_story', function(data){
       console.log("story end");
-      
+      readylist.remove(data.ID); 
       database.ref('account/'+data.ID+'/stage').once('value',db=>{
         var s = 1;
         database.ref('account/'+data.ID+'/stage').set(1);
@@ -346,11 +383,6 @@ io.on('connection', function(socket) {
         socket.emit('give_you_stage', {ID:data.ID, Stage:s});//傳
       });
     })
-    socket.on('fuck', function(data){
-      console.log('fuckyou');
-      socket.emit('fuckyou', {ID:data.ID});
-    })
-
 
 
 /*

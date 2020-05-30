@@ -8,18 +8,41 @@ $(function(){
 
 $( document ).ready(function() {
 
-    $('.confirm').click(next);
+  //  $('.confirm').click(next);
+    $('.confirm').click(function(){
+        socket.emit('MayIGo', {ID:id} );
+      }
+    )
     id = getCookie('ID');
 });
 
+
+socket.on('Go', function(data){
+  if (data.ID == getCookie('ID'))
+  {
+    if(data.Pass == true){
+      $('.prologue').fadeOut(400);
+      $('.bigleaf_front').animate({top:"-=15vh" },400);
+      $('.bigleaf_back').animate({top:"-=15vh" },400);
+      $('.story').fadeIn(400);
+      $('body').click(next);
+      page = 1;
+    }else{
+      alert('wait kid');
+    }
+  }
+})
+
+
 function next(){
   if(page == -1){
+    /*
     $('.prologue').fadeOut(400);
     $('.bigleaf_front').animate({top:"-=15vh" },400);
     $('.bigleaf_back').animate({top:"-=15vh" },400);
     $('.story').fadeIn(400);
     page = 0;
-    $('body').click(next);
+    */
   }else if(page == 0){
     page = 1;
 	}else if(page==1){

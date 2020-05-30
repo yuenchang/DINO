@@ -178,10 +178,9 @@ socket.on('give_you_stage', function(data){
     i.innerHTML = data.Stage;
   }
 })
-
 socket.on('fuckyou', function(data){
   if(data.ID == getCookie('ID')){
-    console.log('i am fucked');
+    alert('1234');
   }
 })
 

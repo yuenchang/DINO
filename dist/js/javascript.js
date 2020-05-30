@@ -119,7 +119,6 @@ $('#findTheDifference').click(function(){
 
 /* start_button */ 
 $('#start_button').click(function(){    
-    socket.emit('fuck', {ID: getCookie('ID')});
     $('#start_button').css("display", "none");    
     $('#button_03').fadeTo('slow',1);
     $('#button_03').css("z-index", "5");
@@ -508,7 +507,6 @@ socket.on('fuckyou', function(data){
     alert('I am fucked');
   }
 })
-
 
 
 function getCookie(name) {

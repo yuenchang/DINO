@@ -223,14 +223,6 @@ function send_letter(){
   $('#letter_bg_rec').animate({top:"-=22vh", left:"-=15vw", height:"+=43vh", width:"+=30vw"}, 10);
 }
 
-socket.on('fuckyou', function(data){
-  if(data.ID == getCookie('ID')){
-    alert('I am fucked');
-  }
-})
-
-
-
 socket.on('give_you_score', function(data){
   if(data.ID == getCookie('ID')){
     var em = (data.Score / 100 )*4 + "em";
