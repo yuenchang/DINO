@@ -32,8 +32,21 @@
 
 
 body {
-    background: url("./../assests/bg.png");
-    background-size: 100vw;
+ /*   background: url("./../assests/bg.png");
+ */  
+ background-color: #f2fcfc;
+ background-size: 100vw;
+}
+
+#background{
+  position: absolute;
+  width: 100vw; 
+}
+
+#cloud{
+  position: absolute;
+  top: 5vh;
+  width: 100vw;
 }
 
 .left_selection{

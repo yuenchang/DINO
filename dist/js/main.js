@@ -37,10 +37,107 @@ $(document).ready(function () {
     });
 
     /* 按恐龍可以收信 */
-    $('#ass_dinasour').click( function(){
-      socket.emit('give_me_letter_k', {ID: getCookie('ID')});
+  $('#ass_dinasour').click( function(){
+    socket.emit('give_me_letter_k', {ID: getCookie('ID')});
+    $( "#ass_dinasour" ).animate({top:"-=10vh" }, "fast",()=>{
+     $( "#ass_dinasour" ).animate({top:"+=10vh" }, "fast");   
+      })
+    })
+  });
+
+
+  var rot2 = function() {
+    $("#ass_dinasour").rotate({
+      angle: 0,
+      animateTo: 360,
+      callback: rot2,
+      easing: function(x, t, b, c, d) { // t: current time, b: begInnIng value, c: change In value, d: duration
+        return c * (t / d) + b;
+      }
     });
+  }
+ // rot2();
+
+
+$("#assdinosour").rotate({
+  bind:
+  {
+    mouseover : function() {
+      $(this).rotate({animateTo:180})
+    },
+    mouseout : function() {
+      $(this).rotate({animateTo:0})
+    }
+  }
+
 });
+
+
+var move = 1;
+
+var timeoutID = window.setInterval(( () =>{ 
+  
+  if(move){
+    $('#ass_dinasour').rotate({animateTo:10})
+    move = 0;
+  }else{
+    $('#ass_dinasour').rotate({animateTo:-10})
+    move = 1;
+  }
+  var top = parseInt($('#ass_dinasour').css('top'), 10);
+  var left = parseInt($('#ass_dinasour').css('left'), 10);
+  var w = window.innerWidth;
+  var h = window.innerHeight;
+  top = (top/h) * 100
+  left =  (left/w) * 100
+  var diffx = 0;
+  var diffy = 0;
+  if(left + 5 > 80){
+    var dir = Math.floor(Math.random()*2);
+    if(dir == 0)
+      diffx = 0;
+    else
+      diffx = -5;
+  }else if(left - 5 < -40){
+    var dir = Math.floor(Math.random()*2);
+    if(dir == 0)
+      diffx = 5;
+    else
+      diffx = 0;
+  }else{
+    var dir = Math.floor(Math.random()*3);
+    if(dir == 0)
+      diffx = 5;
+    else if(dir == 1)
+      diffx = 0;
+    else
+      diffx = -5;
+  }
+  if(top + 5 > 65){
+    var dir = Math.floor(Math.random()*2);
+    if(dir == 0)
+      diffy = -5;
+    else
+      diffy = 0;
+
+  }else if(top - 5 < 15){
+    var dir = Math.floor(Math.random()*2);
+    if(dir == 0)
+      diffy = 5;
+    else
+      diffy = 0;
+  }else{
+     var dir = Math.floor(Math.random()*3);
+    if(dir == 0)
+      diffy = 5;
+    else if(dir==1)
+      diffy = 0;
+    else
+      diffy = -5
+  }
+  $( "#ass_dinasour" ).animate({top:`+=${diffy}vh`,left:`+=${diffx}vw` }, "slow");
+}), 1000);
+
 
 function go_to_letter(){
     $('.write_letter').fadeIn(800);
@@ -214,3 +311,53 @@ function getCookie(name) {
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
 }
+
+//shake
+if (window.DeviceMotionEvent) {
+  window.addEventListener('devicemotion',deviceMotionHandler,false);
+}
+
+var SHAKE_THRESHOLD = 4000;
+var last_update = 0;
+var x, y, z, last_x = 0, last_y = 0, last_z = 0;
+function deviceMotionHandler(eventData) {
+  var acceleration =eventData.accelerationIncludingGravity;
+  var curTime = new Date().getTime();
+  if ((curTime-last_update)> 10) {
+    var diffTime = curTime -last_update;
+    last_update = curTime;
+    x = acceleration.x;
+    y = acceleration.y;
+    z = acceleration.z;
+    var speed = Math.abs(x +y + z - last_x - last_y - last_z) / diffTime * 10000;
+    if (speed > SHAKE_THRESHOLD) {
+      document.getElementById("ass_dinasour").setAttribute("src", "assests/屁頭龍暈船.png");
+      setTimeout(function(){ document.getElementById("ass_dinasour").setAttribute("src", "assests/屁頭龍.png");
+      }, 5000);
+    }
+    last_x = x;
+    last_y = y;
+    last_z = z;
+  }
+}
+
+
+
+if(window.DeviceOrientationEvent) {
+  window.addEventListener('deviceorientation', function(event) {
+      var alpha = event.alpha,
+      beta = event.beta,
+      gamma = event.gamma;
+      
+      if(beta>90)
+        beta = 90;
+      if(beta<0)
+        beta = 0;
+      var y = (beta*40) / 90 - 10;
+      $("#cloud").css("top", `${y}vh`); 
+      $("#cloud").css("left", `${gamma}vw`); 
+  }, false);
+}else{
+  document.querySelector('body').innerHTML = '你的瀏覽器不支援喔';
+}
+
