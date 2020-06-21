@@ -1,7 +1,8 @@
 var wip = "wss://" + window.location.host;
 var socket = io(wip);
-
+var childIsReady2 = 0,parentIsReady2 = 0;
 var page = 0;
+var can_upgrade = false;
 $(document).ready(function () {
   $('#letter').html("\n  謝謝" + getCookie('nickname') + "\n\n  因為...\n\n  這讓我覺得...");
   var id = getCookie('ID'); 
@@ -40,8 +41,19 @@ $(document).ready(function () {
   $('#ass_dinasour').click( function(){
     socket.emit('give_me_letter_k', {ID: getCookie('ID')});
     $( "#ass_dinasour" ).animate({top:"-=10vh" }, "fast",()=>{
-      $( "#ass_dinasour" ).animate({top:"+=10vh" }, "fast");   
+      if(can_upgrade == true)
+      {
+        window.location.href='choose_upgrade.html';
+      }  
+      $( "#ass_dinasour" ).animate({top:"+=10vh" }, "fast"); 
+      socket.emit('give_me_score', {ID: getCookie('ID')}); 
     })
+    
+    document.getElementById("ass_dinasour").setAttribute("src", "assests/屁頭龍下雨天怎麼辦我好想你.png");
+  })
+
+  $('#upgrage_info_ok').click( function(){
+    $('.upgrage_info').fadeOut(400);
   })
 
 
@@ -73,31 +85,53 @@ $("#ass_dinosour").rotate({
   }
   */
 
-$(window).click(function(e) {
+
+//let dino to where you touch
+
+/* 屁頭龍動來動去 */
+/*$(window).click(function(e) {
 
   var relativeX = (e.pageX - $(e.target).offset().left),
     relativeY = (e.pageY - $(e.target).offset().top);
 
+  var left = parseInt($('#ass_dinasour').css('left'), 10);
+  if(left - relativeX < 0){
+    $('#ass_dinasour').css({"transform": "scaleX(-1)"});
+  }else{
+    $('#ass_dinasour').css({"transform": "scaleX(1)"});
+  }
   var w = window.innerWidth;
   var h = window.innerHeight;
   var X = (relativeX/w)*100;
   var Y = ((h-relativeY)/h)*100;
   var offx = parseInt($('#ass_dinasour').css('width'), 10);
   var offy = parseInt($('#ass_dinasour').css('height'), 10);
-  $( "#ass_dinasour" ).animate({top:e.pageY-180,left:e.pageX-100 }, "fast");
-});
+
+  $( "#ass_dinasour" ).animate({top:e.pageY-180,left:e.pageX-100 }, "fast", function(){
+  var rect1 ={ x: parseInt($('#ass_dinasour').css('left'), 10),y: parseInt($('#ass_dinasour').css('top'), 10),width: parseInt($('#ass_dinasour').css('width'), 10),height: parseInt($('#ass_dinasour').css('height'), 10)}
+  var rect2 ={ x: parseInt($('#cloud').css('left'), 10),y: parseInt($('#cloud').css('top'), 10),width: parseInt($('#cloud').css('width'), 10),height: parseInt($('#cloud').css('height'), 10)}
+
+    if (rect1.x < rect2.x + rect2.width &&
+         rect1.x + rect1.width > rect2.x &&
+         rect1.y < rect2.y + rect2.height &&
+         rect1.y + rect1.height > rect2.y) {
+          // collision detected!
+    }
+
+  });
+});*/
 
 
 
 var move = 1;
-
+//random move of dino
 var timeoutID = window.setInterval(( () =>{ 
 
   if(move){
-    $('#ass_dinasour').rotate({animateTo:10})
+ //   $('#ass_dinasour').rotate({animateTo:10})
     move = 0;
   }else{
-    $('#ass_dinasour').rotate({animateTo:-10})
+ //   $('#ass_dinasour').rotate({animateTo:-10})
     move = 1;
   }
   var top = parseInt($('#ass_dinasour').css('top'), 10);
@@ -281,6 +315,13 @@ socket.on('give_you_score', function(data){
     var em = (data.Score / 100 )*4 + "em";
     console.log(em);
     $('#EXP').css({"width":em});
+
+    /* 第一次進化 */
+    if(data.Score == 100)
+    {
+      $('.upgrage_info').css('display','block');
+      can_upgrade = true;
+    }
   }
 })
 
@@ -333,7 +374,7 @@ if (window.DeviceMotionEvent) {
   window.addEventListener('devicemotion',deviceMotionHandler,false);
 }
 
-var SHAKE_THRESHOLD = 4000;
+var SHAKE_THRESHOLD = 5000;
 var last_update = 0;
 var x, y, z, last_x = 0, last_y = 0, last_z = 0;
 function deviceMotionHandler(eventData) {
@@ -358,6 +399,15 @@ function deviceMotionHandler(eventData) {
 }
 
 
+async function sleep(ms = 0) {
+  return new Promise(r => setTimeout(r, ms));
+}
+ 
+async function umbrella() {
+  document.getElementById("ass_dinasour").setAttribute("src", "assests/屁頭龍下雨天怎麼辦我好想你.png");
+  await sleep(3000);
+  document.getElementById("ass_dinasour").setAttribute("src", "assests/屁頭龍.png");
+}
 
 if(window.DeviceOrientationEvent) {
   window.addEventListener('deviceorientation', function(event) {
@@ -372,8 +422,42 @@ if(window.DeviceOrientationEvent) {
     var y = (beta*40) / 90 - 10;
     $("#cloud").css("top", `${y}vh`); 
     $("#cloud").css("left", `${gamma}vw`); 
+    
+    var rect1 ={ x: parseInt($('#ass_dinasour').css('left'), 10),y: parseInt($('#ass_dinasour').css('top'), 10),width: parseInt($('#ass_dinasour').css('width'), 10),height: parseInt($('#ass_dinasour').css('height'), 10)}
+    var rect2 ={ x: parseInt($('#cloud').css('left'), 10),y: parseInt($('#cloud').css('top'), 10),width: parseInt($('#cloud').css('width'), 10),height: 780}
+
+    if (rect1.x < rect2.x + rect2.width &&
+      rect1.x + rect1.width > rect2.x &&
+      rect1.y < rect2.y + rect2.height &&
+      rect1.y + rect1.height > rect2.y) {
+      umbrella();
+      // collision detected!
+    }   
+
   }, false);
 }else{
   document.querySelector('body').innerHTML = '你的瀏覽器不支援喔';
 }
+
+$('#start_button').click(function(){
+  socket.emit('start_game_from_child',{ID:getCookie('ID')});
+  childIsReady2 = 1;
+  console.log("Child is ready");
+  console.log("Parent:" + parentIsReady2 + " Child:" + childIsReady2);
+})
+
+
+socket.on('parent_is_ready', function(data){
+  if(data.ID == getCookie('ID')){   
+    parentIsReady2 = 1;            
+  }
+})
+
+window.setInterval(function () {  
+  if(parentIsReady2 == 1 && childIsReady2 == 1){
+    parentIsReady2 = 0;
+    childIsReady2 = 0;
+    socket.emit('c_bothReady',{ID:getCookie('ID')});    
+  }
+}, 100);
 

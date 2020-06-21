@@ -1,6 +1,6 @@
 var wip = "wss://" + window.location.host;
 var socket = io(wip);
-
+var childIsReady1 = 0,parentIsReady1 = 0;
 var page = 0;
 $(document).ready(function() {
   
@@ -36,6 +36,19 @@ $(document).ready(function() {
       $('#all_letter').fadeOut(400);
     });
 
+    /* 1.評分或為評分選擇 */
+    $('#unscored').click(function(){
+      $('#unscored').attr("src", "./assests/Group 173.svg");
+      $('#scored').attr("src", "./assests/Group 172.svg");
+      socket.emit('give_me_letter', {ID: getCookie('ID')});
+    });
+    $('#scored').click(function(){
+      $('#unscored').attr("src", "./assests/unscored_x.svg");
+      $('#scored').attr("src", "./assests/scored_o.svg");
+      socket.emit('give_me_letter', {ID: getCookie('ID')});
+    });
+
+
     /* 按恐龍可以收信 */
     $('#dinasour').click( function(){
       socket.emit('is_there_letter', {ID: getCookie('ID')});
@@ -47,7 +60,7 @@ socket.on('there_is_letter', function(data){
   $('#bell').show();
 })
 
-//接未讀信件
+//2. 接未讀信件
 socket.on('give_you_letter', function(data){  
     if(data.Letters.length > 0)
     {
@@ -63,7 +76,8 @@ socket.on('give_you_letter', function(data){
       $('#container').attr("src", "./assests/sysinfo.svg");
       page = 1;
     }
-    if($('#container').attr("src") == "./assests/mail.svg")
+    console.log($('#unscored').attr("src"))
+    if($('#container').attr("src") == "./assests/mail.svg" && $('#unscored').attr("src") == "./assests/Group 173.svg")
     {
       console.log('in mail');
       /* 已評分未評分 */
@@ -100,6 +114,33 @@ socket.on('give_you_letter', function(data){
       } 
       document.getElementById("content").innerHTML = str;
       str="";
+      page = 2;
+    }
+    else if($('#container').attr("src") == "./assests/mail.svg" && $('#unscored').attr("src") == "./assests/unscored_x.svg")
+    {
+      $('#all_letter').show();
+      
+      for(var i=0; i<data.Letters_read.length; i++)
+      { 
+        console.log('letter_read');
+        str+="<div class = \"letter\" onclick=\"expand(event)\" id=\""
+        str+=data.Letters_read[i].letter_id;
+        str+="\">";
+        str+="<div class = \"node\">";
+        str+=data.Letters_read[i].date;
+        str+=" 感恩的信</div>";
+        str+="<div class = \"text\">";
+        str+=data.Letters_read[i].content;
+        str+="</div>";
+          
+          
+        
+        
+        str+="</div>";
+        
+      } 
+      document.getElementById("content").innerHTML = str;
+      str = "";
       page = 2;
     }
     else if($('#container').attr("src") == "./assests/sysinfo.svg")
@@ -250,3 +291,24 @@ function letter_back(){
   $('#mission_text').animate({left:"+=200vw" },1500);
   $('#dinasour').animate({top:"+=25vh" },800);
 }
+
+$('#start_button').click(function(){
+  socket.emit('start_game_from_parent',{ID:getCookie('ID')});
+  parentIsReady1 = 1;
+  console.log("Parent is ready");
+  console.log("Parent:" + parentIsReady1 + " Child:" + childIsReady1);
+})
+
+socket.on('child_is_ready', function(data){
+  if(data.ID == getCookie('ID')){
+    childIsReady1 = 1;                         
+  }
+})
+
+window.setInterval(function () {  
+  if(parentIsReady1 == 1 && childIsReady1 == 1){
+    parentIsReady1 = 0;
+    childIsReady1 = 0;
+    socket.emit('p_bothReady',{ID:getCookie('ID')});    
+  }
+}, 100);

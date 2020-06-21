@@ -1,3 +1,6 @@
+var wip = "wss://" + window.location.host;
+var socket = io(wip);
+
 $(document).ready(function () {
   var stage=0
   var typeing=false;
@@ -7,6 +10,7 @@ $(document).ready(function () {
   $(".id_choose").hide()
   $(".parent_input").hide()
   $(".parent_sure").hide()
+  $(".btn--back").hide()
 
   $("body").click(function(){
     if(stage==0){
@@ -15,15 +19,81 @@ $(document).ready(function () {
       setTimeout(() => {
         $(".start").hide()
       }, 1000)
-      $("form").show()
-      $(".form").toggleClass("fadein")
+      $("#signin").show()
+      $("#signin").toggleClass("fadein")
       stage++
     }else if(stage==1){
 
     }
   });
 
-  $('.form_signinbtn').click(function(){
+
+  $('.btn--back').click(function(){
+    /* Animation */
+    $('.bigleaf_front').animate({top:'39.1vh'}, "2000", "swing")
+    $('.bigleaf_back').animate({top:'28vh'}, "2000", "swing")
+    $('.egg').animate({top:'24.8vh'}, "2000", "swing")
+    $(".form--signin").toggleClass("fadein")
+    $('.form--signin').fadeIn("2000")
+    $('.LOGO_back').animate({top:'25.9vh', width: '67vw', right: '15.85vw', 'z-index':'2' }, "1000", "swing")
+    $('#signup').fadeOut("2000")
+    $('.btn--back').fadeOut("2000")
+    $('.LOGO').animate({top:'25.9vh', width: '68.3vw', right: '15.85vw', 'z-index':'3'}, "2000", "swing")
+    /* End Animation */ 
+  })
+
+
+
+  $('.option--signupbtn').click(function(){
+    /* Animation */
+    $('.bigleaf_front').animate({top:'13vh'}, "2000", "swing")
+    $('.bigleaf_back').animate({top:'2vh'}, "2000", "swing")
+    $('.egg').animate({top:'-1vh'}, "2000", "swing")
+    $(".form--signin").toggleClass("fadein")
+    $('.form--signin').fadeOut("2000")
+    $('.LOGO_back').animate({top:'40vh', width: '47vw', right: '26vw' }, "2000", "swing")
+    $('.LOGO').animate({top:'40vh', width: '47vw', right: '26vw' }, "2000", "swing", function(){
+      $('.LOGO').hide()
+      $('.LOGO').css("z-index", '15') 
+      $('.LOGO').fadeIn("2000")
+      $('#signup').fadeIn("2000")
+      $('.btn--back').fadeIn("2000")
+    })
+    /* End Animation */
+  });
+
+  $('.btn--signup').click(function(){
+    var id = $('.input--id').val()
+    var password = $('.input--password').val();
+    var parpwd = $('.input--parpwd').val();
+    var parbirth = $('.input--parbirth').val();  
+    var chibirth = $('.input--chibirth').val(); 
+    var parcall = $('.input--parcall').val(); 
+    socket.emit("signup", {
+        id: id,
+        password: password,
+        parent_password: parpwd,
+        parent_birth: parbirth,
+        child_birth: chibirth,
+        nickname: parcall
+    })
+     /* Animation */
+    $('.bigleaf_front').animate({top:'39.1vh'}, "2000", "swing")
+    $('.bigleaf_back').animate({top:'28vh'}, "2000", "swing")
+    $('.egg').animate({top:'24.8vh'}, "2000", "swing")
+    $(".form--signin").toggleClass("fadein")
+    $('.form--signin').fadeIn("2000")
+    $('.LOGO_back').animate({top:'25.9vh', width: '67vw', right: '15.85vw', 'z-index':'2' }, "1000", "swing")
+    $('#signup').fadeOut("2000")
+    $('.btn--back').fadeOut("2000")
+    $('.LOGO').animate({top:'25.9vh', width: '68.3vw', right: '15.85vw', 'z-index':'3'}, "2000", "swing")
+    /* End Animation */ 
+
+  });
+
+
+
+  $('.btn--signin').click(function(){
     event.preventDefault();
 
     //button animate
@@ -62,7 +132,7 @@ $(document).ready(function () {
         $(".LOGO").toggleClass("fadeout")
         $(".LOGO_back").toggleClass("fadeout")    
         $(".form_blank").toggleClass("fadeout")
-        $(".form_signinbtn").toggleClass("fadeout")
+        $(".btn--signin").toggleClass("fadeout")
         $(".form_option") .toggleClass("fadeout")   
         $(".bigleaf_front").toggleClass("bigleaf_front--floatup")
         $(".mom_dinosaur").show()
@@ -130,31 +200,6 @@ function GoToChild(){
   document.location.href="../loading.html";
 }
 
-  // Float things up while typing
- // $("input").focus(function(){
- //   console.log("I'm typing")  
- //   $(".LOGO").toggleClass("LOGO--floatup")
- //   $(".LOGO_back").toggleClass("LOGO_back--floatup")
- //   $(".Pterodactyl").toggleClass("Pterodactyl--floatup")
- //   $(".leaf_R1-1").toggleClass("leaf_R1-1--floatup")
- //   $(".leaf_R2-2").toggleClass("leaf_R2-2--floatup")
- //   $(".bigleaf_back").toggleClass("bigleaf_back--floatup")
- //   $(".bigleaf_front").toggleClass("bigleaf_front--floatup")
- //   $(".egg").toggleClass("egg--floatup")
- // });
-
- // // Float things down while not typing
- // $("input").focusout(function(){
- //   console.log("I'm typing")  
- //   $(".LOGO").toggleClass("LOGO--floatup")
- //   $(".LOGO_back").toggleClass("LOGO_back--floatup")
- //   $(".Pterodactyl").toggleClass("Pterodactyl--floatup")
- //   $(".leaf_R1-1").toggleClass("leaf_R1-1--floatup")
- //   $(".leaf_R2-2").toggleClass("leaf_R2-2--floatup")
- //   $(".bigleaf_back").toggleClass("bifleaf_back--floatup")
- //   $(".bigleaf_front").toggleClass("bigleaf_front--floatup")
- //   $(".egg").toggleClass("egg--floatup")
- // });
 /*
   $('#typein button[type="submit"]').click(event => {
     event.preventDefault();

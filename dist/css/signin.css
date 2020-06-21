@@ -123,7 +123,7 @@ body {
   width: 107vw;
   right: -5vw;
   top: 24.8vh;
-  z-index: 2; }
+  z-index: 9; }
 
 .leaf_R1-1 {
   width: 43vw;
@@ -156,7 +156,7 @@ body {
   width: 108vw;
   right: -4vw;
   top: 39.1vh;
-  z-index: 9; }
+  z-index: 10; }
 
 .bigleaf_front2 {
   width: 108vw;
@@ -174,13 +174,13 @@ body {
   width: 50.6vw;
   left: 24.8vw;
   top: 39.8vh;
-  z-index: 10; }
+  z-index: 11; }
 
 .child {
   width: 39vw;
   left: 30.5vw;
   top: 66.7vh;
-  z-index: 10; }
+  z-index: 11; }
 
 @-webkit-keyframes fadein {
   from {
@@ -452,20 +452,30 @@ body {
   color: #FFFFFF;
   position: absolute;
   top: 71.5vh;
-  z-index: 10; }
+  z-index: 15; }
 
 .form {
   opacity: 1;
   width: 52vw;
+  height: 40vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
   font-family: "Gen-M";
   font-size: 5vw;
   position: absolute;
   top: 66.5vh;
-  left: 23vw;
-  z-index: 10; }
+  left: 24.5vw;
+  z-index: 15; }
+
+.form--signup{
+  top: 50vh;
+  height: 45vh;
+  width: 58vw;
+  left: 21vw;
+}
 
 .form_blank {
-  width: inherit;
+  width: 50vw;
   font-family: inherit;
   font-size: inherit;
   font-weight: 600;
@@ -498,7 +508,48 @@ body {
   border-style: none;
   outline: none; }
 
-.form_signinbtn {
+.space_input:focus {
+  border-style: none;
+  outline: none; }
+
+.form_space {
+  width: 50vw;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  text-align: center;
+  padding: 1.5vh 4vw 1.5vh 4vw;
+  margin: 0 0 3vh 0;
+  display: inline-flex;
+  justify-content: space-between;
+  background-color: #FFFFFF;
+  border-radius: 6vw; }
+
+.form::-webkit-scrollbar {
+  display: none;
+}
+
+.space_title{
+  width: 17vw;
+  display: inline;
+  font-family: inherit;
+  font-weight: 100;
+  font-size: 65%;
+  color: #3E3E3E;
+  text-align: left;
+}
+
+.space_input {
+  width: 33vw;
+  border-style: none;
+  font-family: inherit;
+  font-size: 65%;
+  color: #2E5338;
+  text-align: center;
+  background-color: transparent;
+}
+
+.form_btn {
   width: 20vw;
   display: inline-block;
   font-size: 0.65em;
@@ -516,7 +567,15 @@ body {
   font-size: 0.65em;
   font-weight: 100;
   color: #FFFFFF; }
-
+.btn--back{
+  top: 42vh;
+  left: 12vw;
+  position: absolute;
+  font-family: "Gen-M";
+  z-index: 500;
+  font-size: 3.25vw;
+  color: #FFFFFF;
+}
 .option--forget {
   margin: 0 0 0 8vw; }
 
@@ -575,18 +634,8 @@ body {
   outline: none; }
 
 .parent_sure {
-  width: 20vw;
-  display: inline-block;
-  font-size: 2em;
-  font-weight: 100;
-  font-family: "Gen-M";
-  color: #FFFFFF;
-  text-align: center;
-  padding: 0.6vh 0.2vw;
-  background-color: #90AF89;
-  border: 0.5vw solid #FFFFFF;
-  border-radius: 5vw;
   z-index: 15;
   position: absolute;
   top: 80.2vh;
-  left: 39.5vw; }
+  left: 23.5vw;
+}

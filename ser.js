@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 8878
+const port = 8887
 const https = require('https')
 const fs = require('fs');
 
@@ -123,6 +123,55 @@ app.get('/signin',(req, res) =>{
   });
 })
 
+/*ranklist  modify*/
+app.get('/main',(req, res) =>{
+ 
+  // update the record
+  var tmp = parseInt(req.query.time,10)
+  var input = {
+      time: tmp
+  }
+  var reff = database.ref('games/difference/'+req.query.question+'/'+req.query.id+'/')
+  reff.set(input)
+
+  // update rank
+  var i=0
+  var key=["","",""]
+  var value=[200,200,200]
+  database.ref('games/difference/'+req.query.question).orderByChild("time").limitToFirst(3).once('value',function(snapshot){
+    snapshot.forEach(function(item) {
+      //console.log(item.key+" "+item.val().time)
+      key[i] = item.key
+      value[i] = item.val().time
+      i++
+    })
+
+    database.ref('account/'+key[0]+'/').once('value',data1=>{
+      database.ref('account/'+key[1]+'/').once('value',data2=>{
+        database.ref('account/'+key[2]+'/').once('value',data3=>{
+          //console.log(data1.val().nickname,data2.val().nickname,data3.val().nickname)
+          res.send(`
+            {
+              "time1": "<p> ${value[0]}秒 </p>",
+              "time2": "<p> ${value[1]}秒 </p>",
+              "time3": "<p> ${value[2]}秒 </p>",
+              "rank1": "<p> 1.${key[0]} 與 ${data1.val().nickname} <\p>",
+              "rank2": "<p> 2.${key[1]} 與 ${data2.val().nickname} <\p>",
+              "rank3": "<p> 3.${key[2]} 與 ${data3.val().nickname} <\p>",
+              "test_time2": ${value[1]},
+              "test_time3": ${value[2]}
+
+            }
+          `)
+        })
+      })
+    })
+
+
+  })
+})
+
+
 Array.prototype.remove = function() {
       var what, a = arguments, L = a.length, ax;
       while (L && this.length) {
@@ -142,7 +191,35 @@ io.on('connection', function(socket) {
     console.log('target is '+data.target);
     io.sockets.emit('receiveMessage', data);
   })*/
-
+  socket.on('signup', function(data){
+    console.log(data);
+    if(data.id != "" && data.password != "" && data.parent_password !="" && data.nickname!="" ){//如果皆有輸入
+        database.ref('account/'+data.id).once('value',v=>{
+          if(v.val()==null){
+            var input = {
+              password: data.password,
+              parent_password: data.parent_password,
+              parent_birth: data.parent_birth,
+              child_birth: data.child_birth,
+              nickname: data.nickname,
+              money: 0,
+              letter: "",
+              letter_for_kid:"",
+              score: 0,
+              stage: 0
+            }
+            var reff = database.ref('account/'+data.id);
+            reff.set(input);
+          }
+          else{
+            //若該使用者已經存在
+          }
+        });
+      }
+      else{
+        //如果輸入有空白
+      }
+  })
   /**** 故事結束.小朋友端顯示出蛋蛋 ****/
   socket.on('end_story', function(data){
     console.log("story end");
@@ -184,12 +261,14 @@ io.on('connection', function(socket) {
         var input = {
           password:db.val().password,
           parent_password: db.val().parent_password,
-          birthday: db.val().birthday,
+          parent_birth: db.val().parent_birth,
+          child_birth: db.val().child_birth,
           nickname: db.val().nickname,
           letter: letters,
           letter_for_kid: db.val().letter_for_kid,
           score: db.val().score,
-          stage: db.val().stage
+          stage: db.val().stage,
+          money: db.val().money
         }
         reff.set(input);
         console.log(letters)
@@ -225,12 +304,14 @@ io.on('connection', function(socket) {
       var input = {
         password:db.val().password,
         parent_password: db.val().parent_password,
-        birthday: db.val().birthday,
+        parent_birth: db.val().parent_birth,
+        child_birth: db.val().child_birth,
         nickname: db.val().nickname,
         letter: db.val().letter,
         letter_for_kid: letters,
-        score:db.val().score,
-        stage:db.val().stage
+        score: db.val().score,
+        stage: db.val().stage,
+        money: db.val().money
       }
       reff.set(input);
       console.log(letters)
@@ -302,27 +383,35 @@ io.on('connection', function(socket) {
         }
       });
     })
-
-    /**** p端按下信件按鈕. 傳給p沒有讀過得信件內容 ****/
-    socket.on('give_me_letter', function(data){
-      var letters = [];
-      database.ref('account/'+data.ID).once('value',db=>{
-        var j = 0;
-        for(var i=0; i< db.val().letter.length; i++)
-        {
-          if(db.val().letter[i].read == false)
-          {
-            letters.push({
-              content:db.val().letter[i].content,
-              date: db.val().letter[i].date,
-              letter_id: db.val().letter[i].letter_id
-            });
-          }
-        }
-        //console.log(letters);
-        socket.emit('give_you_letter', {ID:data.ID, Letters:letters});//傳
-      });
-    })
+/**** 3.p端按下信件按鈕. 傳給p沒有讀過得信件內容 ****/
+socket.on('give_me_letter', function(data){
+  var letters = [];
+  var letters_read = [];
+  database.ref('account/'+data.ID).once('value',db=>{
+    var j = 0;
+    for(var i=0; i< db.val().letter.length; i++)
+    {
+      if(db.val().letter[i].read == false)
+      {
+        letters.push({
+          content:db.val().letter[i].content,
+          date: db.val().letter[i].date,
+          letter_id: db.val().letter[i].letter_id
+        });
+      }
+      else if(db.val().letter[i].read == true)
+      {
+        letters_read.push({
+          content:db.val().letter[i].content,
+          date: db.val().letter[i].date,
+          letter_id: db.val().letter[i].letter_id
+        });
+      }
+    }
+    //console.log(letters);
+    socket.emit('give_you_letter', {ID:data.ID, Letters:letters, Letters_read: letters_read});//傳
+  });
+})
 
     /* 確認有沒有信 */
     socket.on('is_there_letter', function(data){
@@ -382,6 +471,81 @@ io.on('connection', function(socket) {
         var s = db.val();
         socket.emit('give_you_stage', {ID:data.ID, Stage:s});//傳
       });
+    })
+
+    socket.on('start_game_from_parent', function(data){
+      console.log("Parent is ready");
+      io.sockets.emit('parent_is_ready',{ID:data.ID});
+    })
+
+    socket.on('start_game_from_child', function(data){
+      console.log("Child is ready");
+      io.sockets.emit('child_is_ready',{ID:data.ID});
+    })
+
+    socket.on('p_bothReady',function(data){
+      console.log("P_Both are ready");
+      io.sockets.emit('p_both_ready',{ID:data.ID});
+    })
+
+    socket.on('c_bothReady',function(data){
+      console.log("C_Both are ready");
+      io.sockets.emit('c_both_ready',{ID:data.ID});
+    })
+    
+    socket.on('ans1_1', function(data){
+      console.log("ans1_1");
+      io.sockets.emit('ans1_1_toClient',{ID:data.ID});
+    })
+
+    socket.on('ans1_2', function(data){
+      console.log("ans1_2");
+      io.sockets.emit('ans1_2_toClient',{ID:data.ID});
+    })
+
+    socket.on('ans1_3', function(data){
+      console.log("ans1_3");
+      io.sockets.emit('ans1_3_toClient',{ID:data.ID});
+    })
+
+    socket.on('ans1_4', function(data){
+      console.log("ans1_4");
+      io.sockets.emit('ans1_4_toClient',{ID:data.ID});
+    })
+
+    socket.on('ans1_5', function(data){
+      console.log("ans1_5");
+      io.sockets.emit('ans1_5_toClient',{ID:data.ID});
+    })
+
+    socket.on('ans2_1', function(data){
+      console.log("ans2_1");
+      io.sockets.emit('ans2_1_toClient',{ID:data.ID});
+    })
+
+    socket.on('ans2_2', function(data){
+      console.log("ans2_2");
+      io.sockets.emit('ans2_2_toClient',{ID:data.ID});
+    })
+
+    socket.on('ans2_3', function(data){
+      console.log("ans2_3");
+      io.sockets.emit('ans2_3_toClient',{ID:data.ID});
+    })
+
+    socket.on('ans2_4', function(data){
+      console.log("ans2_4");
+      io.sockets.emit('ans2_4_toClient',{ID:data.ID});
+    })
+
+    socket.on('ans2_5', function(data){
+      console.log("ans2_5");
+      io.sockets.emit('ans2_5_toClient',{ID:data.ID});
+    })
+    
+    socket.on('game_over', function(data){
+      console.log("game_over");
+      io.sockets.emit('game_over_toClient',{ID:data.ID});
     })
 
 

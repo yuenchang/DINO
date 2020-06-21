@@ -4,7 +4,8 @@
   "description": "",
   "main": "ser.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-css": "node-sass -w"
   },
   "repository": {
     "type": "git",
@@ -19,11 +20,14 @@
   "dependencies": {
     "express": "^4.17.1",
     "firebase": "^7.14.4",
+    "jquery": "^3.5.1",
+    "node-sass": "^4.14.1",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
-    "node-sass": "^4.14.1",
     "parcel-bundler": "^1.12.4",
-    "pug-cli": "^1.0.0-alpha6"
-  }
+    "pug-cli": "^1.0.0-alpha6",
+    "sass": "^1.17.2"
+  },
+  "keywords": []
 }

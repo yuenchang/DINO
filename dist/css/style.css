@@ -28,7 +28,14 @@
     font-family: GenJyuuGothicN;
 }
 
-
+.flipped {
+  transform: scaleX(-1);
+  -moz-transform: scale(-1, 1);
+  -webkit-transform: scale(-1, 1);
+  -o-transform: scale(-1, 1);
+  -khtml-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+}
 
 
 body {
@@ -50,13 +57,11 @@ body {
 }
 
 .left_selection{
-    position: absolute;
-    /* Try to group it later */
+    position: absolute;    
 }
 
 .right_selection{
-    position: absolute;
-    /* Try to group it later */
+    position: absolute;    
 }
 
 navigation_bar {    
@@ -69,6 +74,7 @@ level_group{
     position: absolute;
     left: 0vw;
 }
+
 
 #EXP{
   width:0em;
@@ -87,24 +93,26 @@ money_group{
 #money_logo{
     position: absolute;
     width: 3vw;
-    left: 19.5vw;
+    left: 17.5vw;
 }
 
 #money_rect{
     position: absolute;
     width: 20vw;
-    left: 23vw;
+    left: 21vw;
 }
 
 #money_value{
-    position: absolute;
-    width: 10vw;
-    top: 0.3vh;
-    left: 31vw;
+  position: absolute;
+  font-family: GenJyuuGothicM;
+  font-size: 3em;
+  color: #416545;
+  top: -0.2vh;
+  left: 26vw;
 }
 
 #nortification{
-    left: 67.5vw;
+    left: 66vw;
     width: 5vw;
     top: 9.5vh;
     z-index: -2;
@@ -114,7 +122,7 @@ money_group{
     position: absolute;
     width: 6vw;
     top: 0.5vh;
-    left: 64vw;
+    left: 76vw;
 }
 
 #help{
@@ -127,19 +135,16 @@ money_group{
 #ass_dinasour{
     width: 63vw;
     left: 23vw;
-    top: 40vh;
-    opacity: 1;
+    top: 40vh;    
 }
 
 #dinasour{
     width: 63vw;
     left: 19vw;
-    top: 41vh;
-    opacity: 1;
+    top: 41vh;    
 }
 
-.left_selection{
-    opacity: 1;
+.left_selection{    
 }
 
 #left_leaf{
@@ -158,10 +163,6 @@ money_group{
     width: 13vw;
     bottom: 4.5vh;
     left: 9vw;
-}
-
-.right_selection{
-    opacity: 1;
 }
 
 #right_leaf{
@@ -192,10 +193,10 @@ money_group{
 
 #bell{
     display: none;
-    left: 43em;
+    left: 42em;
     width: 2em;
     top: 12em;
-    z-index: -1;
+    z-index: 0;
 }
 
 #kid_name{
@@ -474,8 +475,7 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;    
 }
@@ -490,8 +490,7 @@ money_group{
     border-width: 5pt;
     border-color:red;    
     border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
+    cursor: pointer;    
     z-index: 10;
     display: none;
 }
@@ -506,8 +505,7 @@ money_group{
     border-width: 5pt;
     border-color:red;    
     border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
+    cursor: pointer;    
     z-index: 10;
     display: none;
 }
@@ -522,8 +520,7 @@ money_group{
     border-width: 5pt;
     border-color:red;    
     border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
+    cursor: pointer;    
     z-index: 10;
     display: none;
 }
@@ -538,8 +535,7 @@ money_group{
     border-width: 5pt;
     border-color:red;    
     border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
+    cursor: pointer;    
     z-index: 10;
     display: none;
 }
@@ -554,8 +550,7 @@ money_group{
     border-width: 5pt;
     border-color:red;    
     border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
+    cursor: pointer;    
     z-index: 10;
     display: none;
 }
@@ -570,8 +565,7 @@ money_group{
     border-width: 5pt;
     border-color:red;    
     border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
+    cursor: pointer;    
     z-index: 10;
     display: none;
 }
@@ -586,8 +580,7 @@ money_group{
     border-width: 5pt;
     border-color:red;    
     border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
+    cursor: pointer;    
     z-index: 10;
     display: none;
 }
@@ -602,8 +595,7 @@ money_group{
     border-width: 5pt;
     border-color:red;    
     border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
+    cursor: pointer;    
     z-index: 10;
     display: none;
 }
@@ -618,8 +610,7 @@ money_group{
     border-width: 5pt;
     border-color:red;    
     border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
+    cursor: pointer;    
     z-index: 10;
     display: none;
 }
@@ -630,9 +621,7 @@ money_group{
     position: absolute;
     width: 80vw;
     left: 10vw;
-    top: 29vh;
-    opacity: 0;
-    z-index: 1;    
+    top: 29vh;         
     display: none;
 }
 
@@ -640,14 +629,15 @@ money_group{
     position: absolute;
     width: 80vw;
     left: 10vw;
-    top: 29vh;
-    opacity: 1;
-    z-index: 1;
+    top: 29vh;    
     display: none;
 }
 
-.information_box{
+information_box {
     display: none;
+}
+
+.information_box{    
     width: 100vw;
     height: 29vh;
     bottom: 0vh;
@@ -660,30 +650,31 @@ money_group{
     width: 100vw;
     bottom: 0vh;
     opacity: 1;
+    display: none;
 }
 
 #button_01{
     position: absolute;
     width: 18vw;
     left: 40vw;
-    bottom: 5vh;
-    opacity: 1;
-    z-index: 1;
-    display: none;
+    bottom: 5vh;    
+    z-index: 1; 
 }
 
 #subtitle_text_02{
     position: absolute;    
     width: 100vw;
     bottom: 0vh;
-    opacity: 0;    
+    opacity: 1;
+    display: none; 
 }
 
 #subtitle_text_03{
     position: absolute;    
     width: 100vw;
     bottom: 0vh;
-    opacity: 0;
+    opacity: 1;
+    display: none;
 }
 
 /* 返回 */
@@ -691,8 +682,7 @@ money_group{
     position: absolute;
     width: 19vw;
     left: 40vw;
-    top: 67vh;
-    opacity: 0;
+    top: 67vh;    
     z-index: 1;
     display: none;
 }
@@ -701,9 +691,7 @@ money_group{
     position: absolute;
     width: 19vw;
     left: 40vw;
-    top: 67vh;
-    opacity: 0;
-    z-index: 1;
+    top: 67vh;        
     display: none;
 }
 /* 開始遊戲　*/
@@ -711,9 +699,8 @@ money_group{
     position: absolute;
     width: 19vw;
     left: 40vw;
-    top: 46vh;
-    opacity: 0;
-    z-index: 1;
+    top: 46vh;    
+    z-index: 5;
     display: none;
 }
 
@@ -766,9 +753,8 @@ money_group{
     position: absolute;
     width: 39vw;
     left: 30vw;
-    top: 30vh;
-    opacity: 0;
-    z-index: 0;
+    top: 30vh;    
+    z-index: 10;
     display: none;
 }   
 
@@ -776,9 +762,8 @@ money_group{
     position: absolute;
     width: 39vw;
     left: 30vw;
-    top: 49vh;
-    opacity: 0;
-    z-index: 0;
+    top: 49vh;    
+    z-index: 10;
     display: none;
 }
 
@@ -797,8 +782,6 @@ money_group{
     width: 100vw;
     top: 0vh;
     left: 0vw;
-    opacity: 0;
-    z-index: 0;     
     display: none;
 }
 
@@ -806,8 +789,7 @@ money_group{
     position: absolute;
     width: 15vw;
     top: 17vh;
-    left: 42vw;
-    opacity: 0;
+    left: 42vw;    
     display: none;
 }
 
@@ -818,7 +800,6 @@ money_group{
     top: 20vh;
     font-size: 3em;
     color: #416545;    
-    z-index: 5;
     display: none;
 }
 
@@ -830,8 +811,7 @@ money_group{
     position: absolute;   
     width: 21vw;
     top: 60vh;
-    left: 24vw;
-    opacity: 0;
+    left: 24vw;    
     z-index: 3;
     display: none;
 }
@@ -840,8 +820,7 @@ money_group{
     position: absolute;
     width: 21vw;
     top: 60vh;
-    left: 54vw;
-    opacity: 0;
+    left: 54vw;    
     z-index: 3;   
     display: none;
 }
@@ -861,8 +840,7 @@ money_group{
     top: 35vh;
     left: 30.5vw;
     font-size: 6.5em;
-    color: #783F1E;
-    opacity: 1;
+    color: #783F1E;    
     z-index: 10;
     display: none;
 }
@@ -871,8 +849,7 @@ money_group{
     position: absolute;
     width: 9vw;
     top: 49vh;
-    left: 45vw;
-    opacity: 1;
+    left: 45vw;    
     display: none;
 }
 
@@ -950,8 +927,7 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;
 }
@@ -965,8 +941,7 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;
 }
@@ -980,8 +955,7 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;
 }
@@ -995,8 +969,7 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;
 }
@@ -1010,8 +983,7 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;   
 }
@@ -1025,8 +997,7 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;
 }
@@ -1040,8 +1011,7 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;
 }
@@ -1055,8 +1025,7 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;
 }
@@ -1070,8 +1039,7 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;
 }
@@ -1085,8 +1053,208 @@ money_group{
     border-style: solid;
     border-width: 5pt;
     border-color:red;    
-    border-radius: 50%;    
-    opacity: 0;
+    border-radius: 50%;        
     z-index: 10;
     display: none;
+}
+
+
+
+/**** 進化 ****/
+.upgrage_info{
+    display: none;
+}
+
+#upgrage_info_text{
+    width: 100vw;
+    top: 35vh; 
+}
+
+#upgrage_info_ok{
+    width: 21vw;
+    top: 57vh;
+    left: 37vw;
+}
+
+#upgrade_page_text{
+    width: 100vw;
+    top: 79vh;
+}
+
+#wind{
+    width: 60vw;
+    top: 24vh;
+    left: 22vw;
+}
+
+#angel{
+    top: 33vh;
+    width: 17vw;
+    left: 71vw;
+}
+
+#voca{
+    top: 33vh;
+    width: 14vw;
+    left: 11vw;
+}
+
+#dinos{
+    width: 100vw;
+    height: 40vh;
+    top: 16vh;
+}
+
+#moon{
+    top: 4vh;
+    left: -13vw;
+    width: 58vh;
+}
+
+#dino_name{
+    width: 30vw;
+    top: 59vh;
+    left: 36vw;
+}
+
+#dino_info{
+    width: 59vw;
+    top: 65vh;
+    left: 20vw;
+}
+
+#yellow_dino{
+    width: 57vw;
+    top: 40vh;
+    left: 25vw;
+    display: none;
+}
+
+#white_dino{
+    width: 52.5vw;
+    top: 41.5vh;
+    left: 28vw;
+    display: none;
+    z-index: -1;
+}
+
+#big_dino_white{
+    width: 62vw;
+    top: 38vh;
+    left: 16vw;
+    display: none;
+}
+
+#big_dino{
+    width: 71vw;
+    top: 38vh;
+    left: 11vw;
+    display: none;
+}
+
+#white{
+    background:white; 
+    position: absolute; 
+    left: 0px; 
+    top: 0px; 
+    width: 100vw;
+    height: 100vh;
+    display: none; 
+    z-index: 2 
+}
+
+#ajax-output1 {
+    position: absolute;
+    width: 50vw;
+    height: 2vh;
+    top: 77vh;
+    left: 24vw;
+    z-index: 20;
+    font-size: 35px;
+    color: #FFDF96;
+    font-family: GenJyuuGothicH;
+    text-align: center;
+    letter-spacing: 4px;
+    display: none;
+    opacity: 0;
+}
+
+#ajax-output2 {
+    position: absolute;
+    width: 50vw;
+    height: 2vh;
+    top: 81.4vh;
+    left: 24vw;
+    z-index: 20;
+    font-size: 35px;
+    color: #FFDF96;
+    font-family: GenJyuuGothicH;
+    text-align: center;
+    letter-spacing: 4px;
+    display: none;
+    opacity: 0;
+}
+
+#ajax-output3 {
+    position: absolute;
+    width: 50vw;
+    height: 2vh;
+    top: 85.7vh;
+    left: 24vw;
+    z-index: 20;
+    font-size: 35px;
+    color: #FFDF96;
+    font-family: GenJyuuGothicH;
+    text-align: center;
+    letter-spacing: 4px;
+    display: none;
+    opacity: 0;
+}
+
+#output1-value {
+    position: absolute;
+    width: 50vw;
+    height: 2vh;
+    top: 77vh;
+    left: 68vw;
+    z-index: 20;
+    font-size: 35px;
+    color: #FFDF96;
+    font-family: GenJyuuGothicH;
+    text-align: center;
+    letter-spacing: 4px;
+    display: none;
+    opacity: 0;
+}
+
+#output2-value {
+    position: absolute;
+    width: 50vw;
+    height: 2vh;
+    top: 81.4vh;
+    left: 68vw;
+    z-index: 20;
+    font-size: 35px;
+    color: #FFDF96;
+    font-family: GenJyuuGothicH;
+    text-align: center;
+    letter-spacing: 4px;
+    display: none;
+    opacity: 0;
+}
+
+#output3-value {
+    position: absolute;
+    width: 50vw;
+    height: 2vh;
+    top: 85.7vh;
+    left: 68vw;
+    z-index: 20;
+    font-size: 35px;
+    color: #FFDF96;
+    font-family: GenJyuuGothicH;
+    text-align: center;
+    letter-spacing: 4px;
+    display: none;
+    opacity: 0;
 }
